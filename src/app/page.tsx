@@ -24,7 +24,7 @@ export default function Home() {
       };
 
       if (includeKey) {
-        headers['x-api-key'] = useCorrectKey ? correctKey : apiKey;
+        headers['x-api-key'] = useCorrectKey ? correctKey : apiKey.trim();
       }
 
       const res = await fetch('/api/secret', {

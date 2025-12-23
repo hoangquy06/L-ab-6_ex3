@@ -6,13 +6,15 @@ export function middleware(request: NextRequest) {
     // Only apply middleware to /api/secret route
     if (request.nextUrl.pathname.startsWith('/api/secret')) {
         // Get the x-api-key header from the request
-        const apiKey = request.headers.get('x-api-key');
+        const rawApiKey = request.headers.get('x-api-key');
+        const apiKey = rawApiKey ? rawApiKey.trim() : null;
 
         // Get the secret key from environment variable
         const secretKey = process.env.API_SECRET_KEY;
 
         console.log('Middleware Debug:', { 
-            receivedApiKey: apiKey, 
+            receivedRaw: rawApiKey,
+            receivedTrimmed: apiKey,
             expectedKey: secretKey,
             match: apiKey === secretKey 
         });
