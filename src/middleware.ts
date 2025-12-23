@@ -11,6 +11,12 @@ export function middleware(request: NextRequest) {
         // Get the secret key from environment variable
         const secretKey = process.env.API_SECRET_KEY;
 
+        console.log('Middleware Debug:', { 
+            receivedApiKey: apiKey, 
+            expectedKey: secretKey,
+            match: apiKey === secretKey 
+        });
+
         // Check if API key is provided and matches
         if (!apiKey) {
             // No API key provided

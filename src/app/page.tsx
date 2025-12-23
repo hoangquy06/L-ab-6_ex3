@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export default function Home() {
   const [apiKey, setApiKey] = useState('');
@@ -14,7 +14,7 @@ export default function Home() {
   // Correct API key for testing
   const correctKey = 'winter-christmas-2024-secret-key';
 
-  const makeRequest = async (includeKey: boolean, useCorrectKey: boolean = false) => {
+  const makeRequest = useCallback(async (includeKey: boolean, useCorrectKey: boolean = false) => {
     setLoading(true);
     setResponse(null);
 
@@ -48,7 +48,20 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiKey]);
+
+  // Auto-fetch when apiKey changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (apiKey) {
+        makeRequest(true);
+      } else {
+        setResponse(null);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [apiKey, makeRequest]);
 
   const getStatusClass = () => {
     if (!response) return 'status-pending';
