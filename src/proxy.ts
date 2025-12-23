@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Middleware runs before every request
-export function middleware(request: NextRequest) {
-    // Only apply middleware to /api/secret route
+// Proxy runs before every request
+export function proxy(request: NextRequest) {
+    // Only apply proxy to /api/secret route
     if (request.nextUrl.pathname.startsWith('/api/secret')) {
         // Get the x-api-key header from the request
         const rawApiKey = request.headers.get('x-api-key');
@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
         // Get the secret key from environment variable
         const secretKey = process.env.API_SECRET_KEY;
 
-        console.log('Middleware Debug:', { 
+        console.log('Proxy Debug:', { 
             receivedRaw: rawApiKey,
             receivedTrimmed: apiKey,
             expectedKey: secretKey,
@@ -55,7 +55,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
 }
 
-// Configure which routes the middleware applies to
+// Configure which routes the proxy applies to
 export const config = {
     matcher: [
         // Apply to API routes
